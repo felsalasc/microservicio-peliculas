@@ -31,7 +31,7 @@ Peliculas/
 
 Clonar el repositorio:
 
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/felsalasc/microservicio-peliculas.git
 
 Entrar al proyecto:
 
