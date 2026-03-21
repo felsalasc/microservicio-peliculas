@@ -35,7 +35,7 @@ git clone https://github.com/felsalasc/microservicio-peliculas.git
 
 Entrar al proyecto:
 
-cd Peliculas
+microservicio-peliculas
 
 Ejecutar la aplicación:
 
