@@ -1,18 +1,34 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "PELICULAS")
 public class Pelicula {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "TITULO", nullable = false, length = 150)
     private String titulo;
-    private int anio;
+
+    @Column(name = "ANIO", nullable = false)
+    private Integer anio;
+
+    @Column(name = "DIRECTOR", nullable = false, length = 120)
     private String director;
+
+    @Column(name = "GENERO", nullable = false, length = 80)
     private String genero;
+
+    @Column(name = "SINOPSIS", length = 500)
     private String sinopsis;
 
     public Pelicula() {
     }
 
-    public Pelicula(Long id, String titulo, int anio, String director, String genero, String sinopsis) {
+    public Pelicula(Long id, String titulo, Integer anio, String director, String genero, String sinopsis) {
         this.id = id;
         this.titulo = titulo;
         this.anio = anio;
@@ -37,11 +53,11 @@ public class Pelicula {
         this.titulo = titulo;
     }
 
-    public int getAnio() {
+    public Integer getAnio() {
         return anio;
     }
 
-    public void setAnio(int anio) {
+    public void setAnio(Integer anio) {
         this.anio = anio;
     }
 

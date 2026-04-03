@@ -1,43 +1,47 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Pelicula;
+import com.example.demo.repository.PeliculaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PeliculaService {
 
-    private final List<Pelicula> peliculas = new ArrayList<>();
+    private final PeliculaRepository peliculaRepository;
 
-    public PeliculaService() {
-        peliculas.add(new Pelicula(1L, "Inception", 2010, "Christopher Nolan", "Ciencia ficción",
-                "Un ladrón especializado en robar secretos a través de los sueños."));
-
-        peliculas.add(new Pelicula(2L, "The Godfather", 1972, "Francis Ford Coppola", "Drama",
-                "La historia de una poderosa familia mafiosa italiana en Estados Unidos."));
-
-        peliculas.add(new Pelicula(3L, "Titanic", 1997, "James Cameron", "Romance",
-                "Una historia de amor a bordo del famoso transatlántico."));
-
-        peliculas.add(new Pelicula(4L, "The Matrix", 1999, "Lana y Lilly Wachowski", "Acción",
-                "Un programador descubre que la realidad es una simulación."));
-
-        peliculas.add(new Pelicula(5L, "Interstellar", 2014, "Christopher Nolan", "Ciencia ficción",
-                "Un grupo de exploradores viaja por el espacio para salvar a la humanidad."));
+    public PeliculaService(PeliculaRepository peliculaRepository) {
+        this.peliculaRepository = peliculaRepository;
     }
 
     public List<Pelicula> obtenerTodas() {
-        return peliculas;
+        return peliculaRepository.findAll();
     }
 
-    public Pelicula obtenerPorId(Long id) {
-        for (Pelicula pelicula : peliculas) {
-            if (pelicula.getId().equals(id)) {
-                return pelicula;
-            }
-        }
-        return null;
+    public Optional<Pelicula> obtenerPorId(Long id) {
+        return peliculaRepository.findById(id);
+    }
+
+    public Pelicula guardar(Pelicula pelicula) {
+        return peliculaRepository.save(pelicula);
+    }
+
+    public Pelicula actualizar(Long id, Pelicula peliculaActualizada) {
+        return peliculaRepository.findById(id)
+                .map(pelicula -> {
+                    pelicula.setTitulo(peliculaActualizada.getTitulo());
+                    pelicula.setAnio(peliculaActualizada.getAnio());
+                    pelicula.setDirector(peliculaActualizada.getDirector());
+                    pelicula.setGenero(peliculaActualizada.getGenero());
+                    pelicula.setSinopsis(peliculaActualizada.getSinopsis());
+                    return peliculaRepository.save(pelicula);
+                })
+                .orElseThrow(() -> new RuntimeException("Película no encontrada con id: " + id));
+    }
+
+    public void eliminar(Long id) {
+        peliculaRepository.deleteById(id);
     }
 }
