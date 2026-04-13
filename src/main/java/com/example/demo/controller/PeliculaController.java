@@ -30,24 +30,34 @@ public class PeliculaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //  ingresar película
     @PostMapping
     public ResponseEntity<Pelicula> crear(@RequestBody Pelicula pelicula) {
         Pelicula nueva = peliculaService.guardar(pelicula);
-        return ResponseEntity.created(URI.create("/peliculas/" + nueva.getId())).body(nueva);
+        return ResponseEntity
+                .created(URI.create("/peliculas/" + nueva.getId()))
+                .body(nueva);
     }
 
+    // modificar
     @PutMapping("/{id}")
     public ResponseEntity<Pelicula> actualizar(@PathVariable Long id, @RequestBody Pelicula pelicula) {
         try {
-            return ResponseEntity.ok(peliculaService.actualizar(id, pelicula));
+            Pelicula actualizada = peliculaService.actualizar(id, pelicula);
+            return ResponseEntity.ok(actualizada);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
+    //  eliminar
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        peliculaService.eliminar(id);
-        return ResponseEntity.noContent().build();
+        try {
+            peliculaService.eliminar(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
